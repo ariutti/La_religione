@@ -22,7 +22,7 @@ void setup() {
   size(800, 800);
   smooth();
   
-  grid = new Grid(50, 100, width-50, height-100, true, true);
+  grid = new Grid(0, 0, width, height, true, true);
   tP = new int[16];
   
   // serial stuff

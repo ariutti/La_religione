@@ -13,8 +13,8 @@ class Grid
   PFont f;
   
   boolean xFlip, yFlip;
-  int tmin = 180;
-  int tmax = 350;
+  int tmin = 235;
+  int tmax = 280;
 
   // CONTRUCTOR //////////////////////////////////////////
   Grid(int _x, int _y, float _w, float _h, boolean _xFlip, boolean _yFlip)
@@ -96,6 +96,7 @@ class Grid
     
     noStroke();
     stroke(ptat, 0, 0);
+    strokeWeight(1);
     ellipse(UL.x+W/2, UL.y+H/2, w/2, h/2);
     fill(255, 0, 0);
     text( int(ptat), UL.x+W/2, UL.y+H/2);
