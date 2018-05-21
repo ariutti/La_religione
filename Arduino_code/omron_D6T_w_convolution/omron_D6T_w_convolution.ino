@@ -19,6 +19,7 @@ void setup()
   conv  = binaryImg.getConvRef();
   
   Serial.begin(9600);
+  while(!Serial){ delay(10); }
 
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);

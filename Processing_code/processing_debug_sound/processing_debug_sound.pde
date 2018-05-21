@@ -20,17 +20,17 @@ AudioOutput out;
 // SETUP ////////////////////////////////
 void setup() 
 {
-  size(400, 400);
+  size(800, 800);
   smooth();
 
   // serial stuff
-  //printArray(Serial.list());
-  String port = Serial.list()[3];
+  printArray(Serial.list());
+  String port = Serial.list()[0];
   myPort = new Serial(this, port, 9600); 
   
   value = 0;
   
-  font = loadFont("Courier-48.vlw");
+  font = loadFont("Courier-Bold-240.vlw");
   textFont(font);
   textAlign(CENTER);
 
@@ -67,7 +67,7 @@ void read()
       //print(myString);
       //println( myString.indexOf('\n') );  
       value = int(myString.substring(0, myString.indexOf('\n')-1));
-      println(value);
+      //println(value);
       if(value >0)
       {
         if(!presence) {

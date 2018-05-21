@@ -19,7 +19,7 @@ private:
   int kernelSize = 3;
   float kenrel[3][3] = { {-1,-1,-1 } , 
                          {-1, 9,-1 } ,
-                         {-1,-1,-1 } 
+                         {-1,-1,-1 }
                        };
   // mask
   int mask[4][4] = {{0, 1, 1, 1},

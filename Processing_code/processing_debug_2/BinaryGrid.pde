@@ -15,7 +15,7 @@ class BinaryGrid
                 {1, 1, 1, 1},
                 {1, 1, 1, 1},
                 {1, 1, 1, 1}};
-
+               
   // CONTRUCTOR //////////////////////////////////////////
   BinaryGrid(int _x, int _y, float _w, float _h, int _th, boolean _xFlip, boolean _yFlip)
   {
@@ -65,9 +65,19 @@ class BinaryGrid
     }
   }
   
-  // APPLY MASK //////////////////////////////////////////
-  // APPLY MASK //////////////////////////////////////////
-
+  
+  // IS SOMEBODY HERE ////////////////////////////////////
+  boolean isSomebodyHere()
+  {
+    for(int x=0; x<4; x++) {
+      for(int y=0; y<4; y++) {
+        int pos = x + 4*y;
+        if(status[pos])
+          return true;
+      }
+    }
+    return false;
+  }
     
   
   // DISPLAY /////////////////////////////////////////////

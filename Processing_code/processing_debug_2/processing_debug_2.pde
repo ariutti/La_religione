@@ -19,15 +19,23 @@ Grid gridRaw;
 BinaryGrid gridConv;
 // The convolution matrix for a "sharpen" effect stored as a 3 x 3 two-dimensional array.
 float[][] matrix = { { -1, -1, -1 } , 
-                     { -1, 9, -1 } ,
+                     { -1,  9, -1 } ,
                      { -1, -1, -1 } } ;
                      
 
+boolean presence = false;
 PFont f;
+
+// import everything necessary to make sound.
+import ddf.minim.*;
+import ddf.minim.ugens.*;
+Minim minim;
+Oscil sineOsc;
+AudioOutput out;
 
 // SETUP ////////////////////////////////
 void setup() {
-  size(800, 400);
+  size(1600, 800);
   smooth();
   
   gridRaw = new Grid(10, 10, width/2-15, height-20, 240, 280, true, true);
@@ -40,12 +48,18 @@ void setup() {
   }
   
   // serial stuff
-  //printArray(Serial.list());
-  String port = Serial.list()[3];
+  printArray(Serial.list());
+  String port = Serial.list()[0];
   myPort = new Serial(this, port, 9600); 
   
   f = loadFont("Courier-48.vlw");
   textFont(f, 32);
+  
+  // audio stuff
+  minim = new Minim( this );
+  out = minim.getLineOut( Minim.MONO, 2048 );
+  sineOsc = new Oscil( 440, .5, Waves.SINE );
+  presence = false;
 }
 
 // DRAW /////////////////////////////////
@@ -67,8 +81,20 @@ void draw() {
   gridRaw.display(maxIdx, minIdx, true);
   gridConv.update( convolved );
   gridConv.display();
-  
-  
+  if( gridConv.isSomebodyHere() && !presence )
+  {
+    // emit sound
+    sineOsc.patch( out );
+    presence = true;
+    println("sound!");
+  }
+  else if( !gridConv.isSomebodyHere() && presence )
+  {
+    // stop emitting sound
+    sineOsc.unpatch( out );
+    presence = false;
+    println("NOT sound!");
+  }
 }
 
 // CONVOLUTION //////////////////////////
