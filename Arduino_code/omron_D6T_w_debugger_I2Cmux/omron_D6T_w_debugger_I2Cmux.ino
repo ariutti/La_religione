@@ -1,7 +1,3 @@
-/*
- * A sketch modified by Nicola Ariutti - 21-05-2018.
- * To be used with Processing "processing_debug_2".
- */
 #include "D6T44L.h"
 
 int i = 0; // utility variable
@@ -13,11 +9,55 @@ float vMean;
 D6T44L d6t;
 
 
+
+// I2C MULTIPLEXER stuff /////////////////////////////////
+//#include "Wire.h"
+extern "C" { 
+#include "utility/twi.h"  // from Wire library, so we can do bus scanning
+}
+#define TCAADDR 0x70
+// This function need to be used in order to talk with the I2C multiplexer
+// so to select the appropriate D6T board when needed.
+void tcaselect(uint8_t i) {
+  if (i > 7) return;
+  Wire.beginTransmission(TCAADDR);
+  Wire.write(1 << i);
+  Wire.endTransmission();  
+}
+
+
 // SETUP /////////////////////////////////////////////////
 void setup()
 {
-  d6t.init();
   Serial.begin(9600);
+  while(!Serial){ delay(10); }
+
+  delay(3000);
+
+  Wire.begin();
+
+  /*
+  Serial.println("\nTCAScanner ready!");
+  for (uint8_t t=0; t<8; t++) 
+  {
+    tcaselect(t);
+    Serial.print("TCA Port #"); Serial.println(t);
+
+    for (uint8_t addr = 0; addr<=127; addr++) {
+      if (addr == TCAADDR) continue;
+    
+      uint8_t data;
+      if (! twi_writeTo(addr, &data, 0, 1, 1)) {
+         Serial.print("Found I2C 0x");  Serial.println(addr,HEX);
+      }
+    }
+  }
+  Serial.println("\nScan done");
+  */
+
+
+  tcaselect(0);
+  d6t.init();
 
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
@@ -27,7 +67,7 @@ void setup()
 // LOOP //////////////////////////////////////////////////
 void loop()
 {
-  
+  tcaselect(0);
   if(d6t.read() > 0)
   {
     makeCalculations();
