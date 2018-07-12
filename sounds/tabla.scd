@@ -47,6 +47,8 @@ path.entries.do({
 {PlayBuf.ar(2, ~dic_tabla[\hihit][ ~dic_tabla.[\hihit].size.rand ], 1, doneAction:2); }.play;
 {PlayBuf.ar(2, ~dic_tabla[\hi_flick][ ~dic_tabla.[\hi_flick].size.rand ], 1, doneAction:2); }.play;
 {PlayBuf.ar(2, ~dic_tabla[\dead][ ~dic_tabla.[\dead].size.rand ], 1, doneAction:2); }.play
+{PlayBuf.ar(2, ~dic_tabla[\lower][ ~dic_tabla.[\lower].size.rand ], 1, doneAction:2); }.play
+{PlayBuf.ar(2, ~dic_tabla[\low_flick][ ~dic_tabla.[\low_flick].size.rand ], 1, doneAction:2); }.play
 
 
 (
@@ -70,15 +72,20 @@ x = Synth(\tabla, [\buf, ~dic_tabla[\hihit][0]]);
 
 // create the tabla score
 (
-var keys = [\hihit, \low_flick, \lower, \hi_flick, \dead ];
+var keys = [ \hihit, \lower, \dead ]; //\low_flick, \hi_flick,
 ~tabla_score = Pbind(
 	\instrument, \tabla,
-	\list, Pindex(keys, Prand((0..5), 1), inf).trace,
-	//\buf, Pindex( ~dic_tabla[\hihit], Prand((0..(~dic_tabla[\hihit].size-1)), inf),inf),
-	//\buf, Pindex( Pdict(~dic_tabla[Pkey(\list)], Prand((0..(~dic_tabla[Pkey(\list)].size-1)), inf),inf),
-	\dur, Pwhite(0.125, 1, inf)
+	\list, \hihit, //Pindex(keys, Prand((0..5), 1), inf).trace,
+	//\buf, Pindex( ~dic_tabla[ Pkey(\list) ], Prand((0..(~dic_tabla[ Pkey(\list) ].size-1)), inf),inf),
+	//\buf, Pindex( Pdict(~dic_tabla, Prand((0..(~dic_tabla[Pkey(\list)].size-1)), inf),inf),
+	\buf, Pdict( ~dic_tabla, \hihit, inf).trace,
+	\dur, 2 //Pwhite(0.125, 1, inf)
 ).play;
 )
 ~tabla_score.stop;
+
+Pdic
+Ptuple
+Pdict
 
 
