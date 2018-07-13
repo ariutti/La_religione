@@ -5,15 +5,28 @@
 s=Server.local;
 s.options.numOutputBusChannels = 8; // we will have a speaker for each religion (8)
 s.options.numInputBusChannels = 0;
-s.meter;
-s.plotTree;
+//s.meter;
+//s.plotTree;
 
 s.waitForBoot({
 
+	"\n".postln;
+
 	// Synth definitions:
 	"synths.scd".loadRelative;
-
+	"Synths definitions loaded!".postln;
 	s.sync;
+
+	// score definitions:
+	//"score.scd".loadRelative;
+	//"Score loaded!".postln;
+	//s.sync;
+
+	// OSC methods:
+	//"osc.scd".loadRelative;
+	//"OSC method loaded!".postln;
+	//s.sync;
+
 
 	// Routing:
 	// create the groups
@@ -21,15 +34,12 @@ s.waitForBoot({
 	~grp_syn = Group.new(~grp_out, \addBefore);
 
 	// create the arrays
-	//~array_syn = ~array_syn ? [];
 	~array_bus = ~array_bus ? [];
 	~array_out = ~array_out ? [];
 
-	/*
-	* Populate the arrays:
-	* - create busses;
-	* - create output stages;
-	*/
+	// Populate the arrays:
+	// - create busses;
+	// - create output stages;
 	s.options.numOutputBusChannels.do(
 		{
 			|item|
@@ -43,7 +53,6 @@ s.waitForBoot({
 			);
 	});
 
-	// TODO: create the tibetan voices and pass them the bus array
 	Synth(\drone, [\out, ~array_bus, \freq, 32, \mix, 0.1,  \detune, 0.5, \amp, 0.7], target:~grp_syn);
 	Synth(\drone, [\out, ~array_bus, \freq, 64, \mix, 0.3,  \detune, 1,   \amp, 0.25], target:~grp_syn);
 	Synth(\drone, [\out, ~array_bus, \freq, 96, \mix, 0.5,  \detune, 1.1, \amp, 0.25*0.9], target:~grp_syn);
@@ -52,17 +61,25 @@ s.waitForBoot({
 	Synth(\drone, [\out, ~array_bus, \freq, 256,\mix, 0.99, \detune, 1.6, \amp, 0.25*0.2], target:~grp_syn);
 	Synth(\drone, [\out, ~array_bus, \freq, 320,\mix, 0.99, \detune, 2,   \amp, 0.25*0.3], target:~grp_syn);
 
+	s.sync;
 
-	// Score creation:
+	// score definitions:
 	"score.scd".loadRelative;
+	"Score loaded!".postln;
+	s.sync;
 
-	// OSC controls:
+	// OSC methods:
 	"osc.scd".loadRelative;
+	"OSC method loaded!".postln;
+	s.sync;
 
 });
 )
 
+
 /*
+// TEST STUFF
+
 Server;
 s.serverRunning;
 s.makeGui;

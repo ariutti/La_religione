@@ -11,7 +11,9 @@
 		{
 			//"condizione vera".postln;
 			~array_out[ msg[1] ].set(\level, 0.05, \lagTime, 0.5);
-			Synth(\firefly, [\out, msg[1], \amp, 0.125 ]);
+			// call a function to play more than one firefly
+			// at the selected speaker position
+			~func_clicked_firefly.value( msg[1] );
 		},
 		{
 			//"condizione falsa".postln;
@@ -40,24 +42,10 @@
 
 
 
-/*
-// QUIT function
-~osc_quit = OSCFunc({
-| msg, time, addr, recvPort |
-postln("func quit");
-if( msg[1]==1 && s.serverRunning, {
-s.freeAll;
-s.quit;
-},{} );
-}, "/method/sound", recvPort:15300);
-*/
-
-
-
 // TODO: add a "statup sound" OSC function
 ~osc_sound = OSCFunc({
 	| msg, time, addr, recvPort |
-	postln("func sound");
+	postln("func 'sound' " ++ msg[1] );
 
 	if( msg[1]==1, {
 		~array_out.do{
@@ -65,7 +53,7 @@ s.quit;
 			//item.postln;
 			item.set(\level, 1.0, \lagTime, 5);
 		};
-		y.start;
+		~task_firefly.start;
 	},
 	{
 		~array_out.do{
@@ -73,18 +61,24 @@ s.quit;
 			//item.postln;
 			item.set(\level, 0.0, \lagTime, 3);
 		};
-		y.stop;
+		~task_firefly.stop;
 	});
 }, "/method/sound", recvPort:15300);
 
 
 
 
-/* TEST STUFF ***************************************************
+/*
+// TEST STUFF
+
 ~ctrl.sendMsg("/method/clicked", 4);
 ~ctrl.sendMsg("/method/released", 4);
 ~ctrl.sendMsg("/method/sound", 1);
 ~ctrl.sendMsg("/method/sound", 0);
+
+
+~osc_sound.free;
+~osc_sound
 
 
 (
@@ -96,4 +90,16 @@ s.quit;
 	~ctrl.sendMsg("/method/released", item );
 });
 )
+*/
+
+/*
+// QUIT function
+~osc_quit = OSCFunc({
+| msg, time, addr, recvPort |
+postln("func quit");
+if( msg[1]==1 && s.serverRunning, {
+s.freeAll;
+s.quit;
+},{} );
+}, "/method/sound", recvPort:15300);
 */

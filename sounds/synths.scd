@@ -24,7 +24,7 @@ SynthDef(\outputStage, {
 SynthDef(\drone, {
 	|freq=64, amp=0.125, drywet=0.5, detune=1, reso_f=1, out=0|
 	var sig, w, reso;
-	//reso = LFNoise1.kr( reso_f ).exprange(0.05, 0.5);
+	// reso = LFNoise1.kr( reso_f ).exprange(0.05, 0.5);
 	// make it less resonant
 	reso = LFNoise1.kr( reso_f ).exprange(0.1, 0.5);
 
@@ -43,7 +43,10 @@ SynthDef(\drone, {
 	// stereo pan
 	//Out.ar(0, Pan2.ar(sig,LFNoise1.kr( Rand(0.05, 0.2) )) );
 	// multichannel pan
-	Out.ar(out, PanAz.ar( s.options.numOutputBusChannels, sig, LFNoise1.kr( Rand(0.05, 0.2) ), width:4.0) );
+	//Out.ar(out, PanAz.ar( s.options.numOutputBusChannels, sig, LFNoise1.kr( Rand(0.05, 0.2) ), width:4.0) );
+	// better to have drone moving alla around the 360
+	// in order not to have some silent speaker for a long time.
+	Out.ar(out, PanAz.ar( s.options.numOutputBusChannels, sig, LFSaw.kr( Rand(0.05, 0.2) ), width:4.0) );
 }).add;
 
 
@@ -53,18 +56,5 @@ SynthDef(\firefly, {
 	var sig, env;
 	env = EnvGen.ar(Env.perc(0.01, 3), doneAction:2);
 	sig = SinOsc.ar(freq) * env * amp;
-	Out.ar(out, sig);
-}).add;
-
-
-
-// Religion synths
-
-// create the synth definitions
-SynthDef(\protestantesimo, {
-	| amp=1.0, rate=1.0, out=0, bufnum |
-	var sig; //, fade;
-	sig = PlayBuf.ar();
-	sig = sig * amp;
 	Out.ar(out, sig);
 }).add;
