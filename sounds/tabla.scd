@@ -8,7 +8,7 @@ var path;
 ~samples_tabla_lower = ~samples_tabla_lower ? [];
 
 path = PathName.new( thisProcess.nowExecutingPath );
-path = PathName(path.pathOnly+/+"tabla");
+path = PathName(path.pathOnly+/+"samples/tabla");
 //path.postln;
 
 ~dic_tabla = ();
@@ -58,7 +58,7 @@ SynthDef(\tabla, {
 	var sig, env;
 	sig = PlayBuf.ar(2, buf, BufRateScale.kr(buf)*rate, doneAction:2);
 
-	sig = FreeVerb.ar(sig, 0.05, 2);
+	//sig = FreeVerb.ar(sig, 0.05, 2);
 	sig = sig * amp;
 	Out.ar(0, sig!2);
 }).add;
@@ -83,6 +83,25 @@ var keys = [ \hihit, \lower, \dead ]; //\low_flick, \hi_flick,
 ).play;
 )
 ~tabla_score.stop;
+
+~dic_tabla[\hihit][0].duration;
+~dic_tabla[\hihit][1];
+
+(
+~task_play_tabla = Task({
+
+	Synth(\tabla, [\buf, ~dic_tabla[\hihit][0]]);
+	1.wait;
+	Synth(\tabla, [\buf, ~dic_tabla[\hihit][1]]);
+	1.wait;
+	Synth(\tabla, [\buf, ~dic_tabla[\hihit][2]]);
+	1.wait;
+	Synth(\tabla, [\buf, ~dic_tabla[\hihit][3]]);
+
+});
+)
+
+~task_play_tabla.play(quant:0);
 
 Pdic
 Ptuple

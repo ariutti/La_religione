@@ -1,5 +1,15 @@
 # README
 
+## SOUNDS
+
+Some sounds are created from the ground up:
+
+* _organ_;
+
+Some sound are taken from:
+
+* WIP
+
 ## Note sull'uso dei D6T temperatura:
 
 Il tempo di calcolo richiesto dal processing dell'immagine da parte di una singola istanza della classe D6T e BinaryImg è inferiore ai 20ms.
