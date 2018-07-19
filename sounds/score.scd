@@ -32,7 +32,37 @@
 	).play(quant:0);
 };
 
+// function to launch religion
+~playBuf = {
+	|pathSec, type|
+	// set the right path for the number of sample
+	var finalP, n, buf, sig;
+	if(type == "r", {//multiple available samples
+		n = (5.rand + 1);
+		finalP = ~samplesPath ++ "/" ++ pathSec ++ "/" ++ pathSec ++ n ++ ".wav";
+	},{//single sample
+		n = "single file";
+		finalP = ~samplesPath ++ "/" ++ pathSec ++ "/" ++ pathSec ++ ".wav";
+	});
 
+	("n sample: "++n).postln;
+	buf = Buffer.read(s, finalP);
+	sig = Synth(\Attack, [\bufnum, buf]);
+};
+//get the message argument and play the right religion attack
+~parseReligion = {
+	|msg|
+	switch(msg,
+		1, {"cattolicesimo".postln;},
+		2, {"ebraismo".postln; if(true, {~playBuf.value("harp", "r")}, {"".postln;})},
+		3, {"Sikh".postln;},
+		4, {"Induismo".postln;},
+		5, {"islam".postln; if(true, {~playBuf.value("muezzin", "s")}, {"".postln;})},
+		6, {"buddismo".postln;},
+		7, {"ateismo".postln;},
+		8, {"protestantesimo".postln; if(true, {~playBuf.value("organ", "r")}, {"".postln;})},
+	)
+}
 
 // samples management
 
