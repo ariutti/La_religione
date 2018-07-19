@@ -58,3 +58,10 @@ SynthDef(\firefly, {
 	sig = SinOsc.ar(freq) * env * amp;
 	Out.ar(out, sig);
 }).add;
+
+/* Synth for launch buffer play */
+SynthDef(\Attack, {
+	| out = 0, bufnum = 0|
+	var sig = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), doneAction: 2);
+	Out.ar(out, sig!2);
+}).add;
