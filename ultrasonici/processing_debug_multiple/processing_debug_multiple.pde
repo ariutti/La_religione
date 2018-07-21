@@ -4,19 +4,21 @@ Serial myPort;
 String myString = null;
 String[] list;
 boolean presence = false;
-int value;
+int idx, distance;
 int lfcr = 10;
 
 PFont font;
 
 final int TH = 220;
 
-// import everything necessary to make sound.
-import ddf.minim.*;
-import ddf.minim.ugens.*;
-Minim minim;
-Oscil sineOsc;
-AudioOutput out;
+//// import everything necessary to make sound.
+//import ddf.minim.*;
+//import ddf.minim.ugens.*;
+//Minim minim;
+//Oscil sineOsc;
+//AudioOutput out;
+
+Meter[8] meter;
 
 
 // SETUP ////////////////////////////////
@@ -30,34 +32,24 @@ void setup()
   String port = Serial.list()[3];
   myPort = new Serial(this, port, 9600); 
   
-  value = 0;
+  idx = 0;
+  distance = 0;
   
   font = loadFont("Courier-Bold-240.vlw");
   textFont(font);
   textAlign(CENTER);
 
   // audio stuff
-  minim = new Minim( this );
-  out = minim.getLineOut( Minim.MONO, 2048 );
-  sineOsc = new Oscil( 440, .5, Waves.SINE );
+  //minim = new Minim( this );
+  //out = minim.getLineOut( Minim.MONO, 2048 );
+  //sineOsc = new Oscil( 440, .5, Waves.SINE );
 
 }
 
 // DRAW /////////////////////////////////
 void draw() {
   read();
-  if(presence)
-  {
-    background(255, 0, 0);
-    fill(0);
-    text(value, width/2, height/2);
-  }
-  else
-  {
-    background(0);
-    fill(255);
-    text(value, width/2, height/2);
-  }
+  
 }
 
 // READ values from Serial //////////////
@@ -67,23 +59,12 @@ void read()
     myString = myPort.readStringUntil('\n');
     if (myString != null) {
       //print(myString);
-      //println( myString.indexOf('\n') );  
-      value = int(myString.substring(0, myString.indexOf('\n')-1));
-      //println(value);
-      if(value < TH)
-      {
-        if(!presence) {
-          presence = true;
-          sineOsc.patch( out );
-        }
-      }
-      else
-      {
-        if(presence) {
-          presence = false;
-          sineOsc.unpatch( out );
-        }
-      }
+      //println( myString.indexOf('\n') ); 
+      idx = int(myString.substring(0, myString.indexOf('-')-1));
+      distance = int(myString.substring(myString.indexOf('-'), myString.indexOf(';')-1));
+      
+      // TODO: here update Meter instance based on index
+      meter[ idx ].update( distance );     
     }
   }
 }
