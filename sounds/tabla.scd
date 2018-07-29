@@ -17,9 +17,9 @@ path.entries.do({
 	| subfolder |
 	//subfolder.folderName.postln;
 
-	if(subfolder.isFolder){
+	if(subfolder.isFolder) {
 		var array = [];
-		//"is folder".postln;
+		"is folder".postln;
 		subfolder.entries.do({
 			|file|
 			if( (file.isFile).and(file.extension=="wav")) {
@@ -27,6 +27,7 @@ path.entries.do({
 				array = array.add( Buffer.read(s, file.fullPath) );
 			};
 		});
+
 		("folder '"+subfolder.folderName+"' contains "+array.size+"soundfiles!").postln;
 		~dic_tabla.put(subfolder.folderName.asSymbol, array);
 	};
@@ -36,41 +37,72 @@ path.entries.do({
 
 )
 
-~dic_tabla.keys;
-~dic_tabla.values;
-~dic_tabla.getPairs;
-~dic_tabla.associationAt(\lower);
-~dic_tabla[\lower].size;
-~dic_tabla[\hihit].size;
-
-
-{PlayBuf.ar(2, ~dic_tabla[\hihit][ ~dic_tabla.[\hihit].size.rand ], 1, doneAction:2); }.play;
-{PlayBuf.ar(2, ~dic_tabla[\hi_flick][ ~dic_tabla.[\hi_flick].size.rand ], 1, doneAction:2); }.play;
-{PlayBuf.ar(2, ~dic_tabla[\dead][ ~dic_tabla.[\dead].size.rand ], 1, doneAction:2); }.play
-{PlayBuf.ar(2, ~dic_tabla[\lower][ ~dic_tabla.[\lower].size.rand ], 1, doneAction:2); }.play
-{PlayBuf.ar(2, ~dic_tabla[\low_flick][ ~dic_tabla.[\low_flick].size.rand ], 1, doneAction:2); }.play
-
 
 (
 // create the tabla player synth
 SynthDef(\tabla, {
-	| amp=0.75, buf=0, rate=1.0 |
+	| amp=1, buf=0, rate=1.0 |
 	var sig, env;
 	sig = PlayBuf.ar(2, buf, BufRateScale.kr(buf)*rate, doneAction:2);
 
 	//sig = FreeVerb.ar(sig, 0.05, 2);
-	sig = sig * amp;
+	sig = sig * amp * 3;
 	Out.ar(0, sig!2);
 }).add;
 )
 
-
-~dic_tabla.keys.asArray[0].asSymbol
-
+// test a single sound
 x = Synth(\tabla, [\buf, ~dic_tabla[\hihit][0]]);
-(0..(~dic_tabla[\hihit].size-1))
+
+// we can create a Pbind for each family of samples
+(
+~score_tabla_hihit = Pbind(
+	\instrument, \tabla,
+	\buf, Pindex( ~dic_tabla[ \hihit ], Prand((0..(~dic_tabla[ \hihit ].size-1)), 1), 1),
+	\dur, 0.182 //Pwhite(0.125, 1, 1)
+);
+
+~score_tabla_dead = Pbind(
+	\instrument, \tabla,
+	\buf, Pindex( ~dic_tabla[ \dead ], Prand((0..(~dic_tabla[ \dead ].size-1)), 1), 1),
+	\dur, 0.035 //Pwhite(0.125, 1, 1)
+);
+
+~score_tabla_lower = Pbind(
+	\instrument, \tabla,
+	\buf, Pindex( ~dic_tabla[ \lower ], Prand((0..(~dic_tabla[ \lower ].size-1)), 1), 1),
+	\dur, 0.35 //Pwhite(0.125, 1, 1)
+);
+
+~score_tabla_hiflick = Pbind(
+	\instrument, \tabla,
+	\buf, Pindex( ~dic_tabla[ \hi_flick ], Prand((0..(~dic_tabla[ \hi_flick ].size-1)), 1), 1),
+	\dur, 0.400 //Pwhite(0.125, 1, 1)
+);
+
+~score_tabla_lowflick = Pbind(
+	\instrument, \tabla,
+	\buf, Pindex( ~dic_tabla[ \low_flick ], Prand((0..(~dic_tabla[ \low_flick ].size-1)), 1), 1),
+	\dur, 0.151 //Pwhite(0.125, 1, 1)
+);
+)
 
 
+(
+Pseq([
+	Pif(Pfunc({ 0.7.coin }), ~score_tabla_hiflick),
+	Pif(Pfunc({ 0.9.coin }), ~score_tabla_lower),
+	Pif(Pfunc({ 0.6.coin }), ~score_tabla_hihit),
+	Pif(Pfunc({ 0.8.coin }), ~score_tabla_lowflock),
+	Pif(Pfunc({ 0.6.coin }), ~score_tabla_dead),
+], Prand([1,2],1).trace ).play;
+)
+
+
+
+
+/*
+// OLD STUFF /////////////////////////////////////////////////////////////////////////
 
 // create the tabla score
 (
@@ -96,9 +128,6 @@ var keys = [ \hihit, \lower, \dead ]; //\low_flick, \hi_flick,
 ).play;
 )
 ~tabla_score.stop;
-
-Psym
-
 
 
 ~dic_tabla[\hihit][0].duration;
@@ -132,8 +161,29 @@ Psym
 
 ~dic_tabla[\hihit][0].duration
 
+// TEST stuff /////////////////
+
+~dic_tabla.keys;
+~dic_tabla.values;
+~dic_tabla.getPairs;
+~dic_tabla.associationAt(\lower);
+~dic_tabla[\lower].size;
+~dic_tabla[\hihit].size;
+
+{PlayBuf.ar(2, ~dic_tabla[\hihit][ ~dic_tabla.[\hihit].size.rand ], 1, doneAction:2); }.play;
+{PlayBuf.ar(2, ~dic_tabla[\hi_flick][ ~dic_tabla.[\hi_flick].size.rand ], 1, doneAction:2); }.play;
+{PlayBuf.ar(2, ~dic_tabla[\dead][ ~dic_tabla.[\dead].size.rand ], 1, doneAction:2); }.play
+{PlayBuf.ar(2, ~dic_tabla[\lower][ ~dic_tabla.[\lower].size.rand ], 1, doneAction:2); }.play
+{PlayBuf.ar(2, ~dic_tabla[\low_flick][ ~dic_tabla.[\low_flick].size.rand ], 1, doneAction:2); }.play
+
+
+
+
+~dic_tabla.keys.asArray[0].asSymbol
+(0..(~dic_tabla[\hihit].size-1))
+
+Psym
 Pdic
 Ptuple
 Pdict
-
-
+*/
