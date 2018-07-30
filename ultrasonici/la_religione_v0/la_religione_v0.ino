@@ -6,6 +6,7 @@ const int addresspins[] = {18, 19, 20, 21};
 
 
 #define NSENSORS 2
+// class US is not used for the moment
 //#include "US.h"
 //US us[NSENSORS];
 
