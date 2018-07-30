@@ -60,10 +60,11 @@ SynthDef(\firefly, {
 }).add;
 
 
-
+/*
 // Synth for launch buffer play
 SynthDef(\Attack, {
 	| out = 0, bufnum = 0|
 	var sig = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), doneAction: 2);
 	Out.ar(out, sig!2);
 }).add;
+*/

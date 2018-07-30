@@ -31,7 +31,7 @@
 	).play(quant:0);
 };
 
-
+/*
 // function to launch religion
 ~playBuf = {
 	|pathSec, type|
@@ -63,6 +63,7 @@
 		7, {"protestantesimo".postln; if(true, {~playBuf.value("organ", "r")}, {"".postln;})},
 	)
 }
+*/
 
 // samples management
 

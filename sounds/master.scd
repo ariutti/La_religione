@@ -3,8 +3,10 @@
 (
 // server settings;
 s=Server.local;
+//s.options.device = "ASIO : US-16x08 ASIO";
+
 s.options.numOutputBusChannels = 8; // we will have a speaker for each religion (8)
-s.options.numInputBusChannels = 0;
+s.options.numInputBusChannels = 2;
 //s.meter;
 //s.plotTree;
 
@@ -78,7 +80,7 @@ s.waitForBoot({
 
 
 /*
-// TEST STUFF
+// TEST STUFF /////////////////////////////////////////////////////////////////////
 
 Server;
 s.serverRunning;
