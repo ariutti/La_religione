@@ -8,8 +8,8 @@ s.freqscope;
 
 ~ctrl.sendMsg("/method/sound", 1);
 ~ctrl.sendMsg("/method/sound", 0);
-~ctrl.sendMsg("/method/clicked", 0);
-~ctrl.sendMsg("/method/released", 0);
+~ctrl.sendMsg("/method/clicked", 2);
+~ctrl.sendMsg("/method/released",2);
 
 
 (
@@ -42,8 +42,8 @@ SynthDef(\Attack, {
 
 (
 // SICK (single sample)
-~path_sick_samples = PathName(~path_samples.pathOnly+/+"samples/windshimes/windshimes.wav");
-~sample_islam = Buffer.read(s, ~path_sick_samples.fullPath);
+~path_sick_samples = PathName(~path_samples.pathOnly+/+"samples/windchimes/windchime.wav");
+~sample_sick = Buffer.read(s, ~path_sick_samples.fullPath);
 
 // ISLAM (single sample)
 ~path_islam_samples = PathName(~path_samples.pathOnly+/+"samples/muezzin/muezzin.wav");
