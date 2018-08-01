@@ -1,15 +1,5 @@
 # README
 
-## SOUNDS
-
-Some sounds are created from the ground up:
-
-* _organ_;
-
-Some sound are taken from:
-
-* WIP
-
 ## Note sull'uso dei D6T temperatura:
 
 Il tempo di calcolo richiesto dal processing dell'immagine da parte di una singola istanza della classe D6T e BinaryImg è inferiore ai 20ms.
@@ -27,5 +17,3 @@ Nella situazione in cui ci troviamo (soffitto a 3m) funzioneranno bene i sensori
 
 Quali sono i sensori maxbotix che hanno dfigura polare A di 3mt?
 * XL MaxSonar MB 1200-1300 EZ0 [link:https://www.digikey.it/product-detail/it/maxbotix-inc/MB1200-000/1863-1013-ND/7896785]
-
-
