@@ -16,19 +16,8 @@ s.waitForBoot({
 
 	// Synth definitions:
 	"synths.scd".loadRelative;
-	"Synths definitions loaded!".postln;
+	"Synths loaded!".postln;
 	s.sync;
-
-	// score definitions:
-	//"score.scd".loadRelative;
-	//"Score loaded!".postln;
-	//s.sync;
-
-	// OSC methods:
-	//"osc.scd".loadRelative;
-	//"OSC method loaded!".postln;
-	//s.sync;
-
 
 	// Routing:
 	// create the groups
@@ -65,6 +54,7 @@ s.waitForBoot({
 
 	s.sync;
 
+
 	// score definitions:
 	"score.scd".loadRelative;
 	"Score loaded!".postln;
@@ -72,7 +62,7 @@ s.waitForBoot({
 
 	// OSC methods:
 	"osc.scd".loadRelative;
-	"OSC method loaded!".postln;
+	"OSC loaded!".postln;
 	s.sync;
 
 });

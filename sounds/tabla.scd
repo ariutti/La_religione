@@ -89,16 +89,16 @@ x = Synth(\tabla, [\buf, ~dic_tabla[\hihit][0]]);
 
 
 (
-Pseq([
+~score_tabla = Pseq([
 	Pif(Pfunc({ 0.7.coin }), ~score_tabla_hiflick),
 	Pif(Pfunc({ 0.9.coin }), ~score_tabla_lower),
 	Pif(Pfunc({ 0.6.coin }), ~score_tabla_hihit),
 	Pif(Pfunc({ 0.8.coin }), ~score_tabla_lowflock),
 	Pif(Pfunc({ 0.6.coin }), ~score_tabla_dead),
-], Prand([1,2],1).trace ).play;
+], Prand([1,2],1).trace ).asEventStreamPlayer;
 )
 
-
+~score_tabla.play(doReset:true);
 
 
 /*

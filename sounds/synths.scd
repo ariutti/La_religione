@@ -60,10 +60,50 @@ SynthDef(\firefly, {
 }).add;
 
 
+// the tabla player synth
+SynthDef(\tabla, {
+	| amp=1, buf=0, rate=1.0, out=0 |
+	var sig, env;
+	sig = PlayBuf.ar(2, buf, BufRateScale.kr(buf)*rate, doneAction:2);
+	//sig = FreeVerb.ar(sig, 0.05, 2);
+	sig = sig * amp * 3;
+	Out.ar(out, sig!2);
+}).add;
+
+
+
+// bell (glokenspiel and tibetan bell)
+SynthDef(\bell, {
+	|
+	fs=1, t60=1, pitchy=1, amp=0.25, out=0
+	|
+	var sig, exciter;
+	//exciter = Impulse.ar(0);
+	exciter = WhiteNoise.ar() * EnvGen.ar(Env.perc(0.001, 0.05), gate:1) * 0.25;
+	sig = Klank.ar(
+		`[
+			[1, 2, 2.803, 3.871, 5.074, 7.81, 10.948, 14.421],   // freqs
+			[1, 0.044, 0.891, 0.0891, 0.794, 0.1, 0.281, 0.079], // amplitudes
+			[1, 0.205, 1, 0.196, 0.339, 0.047, 0.058, 0.047]*t60 // ring times
+		],
+		exciter,
+		freqscale:fs*pitchy);
+	//sig = sig + CombN.ar(sig, 1, 0.1, 0.7);
+	sig = FreeVerb.ar(sig, 0.4,0.5,0.6) * amp;
+	DetectSilence.ar(sig, 0.001, 0.5, doneAction:2);
+	Out.ar(out, sig);
+}).add;
+
 
 // Synth for launch buffer play
 SynthDef(\Attack, {
-	| out = 0, bufnum = 0|
-	var sig = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), doneAction: 2);
-	Out.ar(out, sig!2);
+	|
+	out=0, bufnum=0, amp=1.0
+	atk=0.01, rls=5, c=(-1)
+	|
+	var sig, env;
+	env = EnvGen.ar(Env.perc(atk, rls, curve:c), doneAction:2);
+	sig = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum) );
+	sig = sig * env * amp;
+	Out.ar(out, sig);
 }).add;

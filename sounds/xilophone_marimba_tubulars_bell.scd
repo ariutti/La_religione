@@ -75,9 +75,9 @@ Pbind(
 (
 x = Synth(\bell,
 	[
-	\fs, 60.midicps,
+	\fs, 72.midicps,
 	\t60, 8,
-	\pitchy, 2
+	\pitchy, 0.6
 ]);
 )
 
