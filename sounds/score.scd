@@ -78,7 +78,7 @@ path.entries.do({
 	Pif(Pfunc({ 0.6.coin }), ~score_tabla_hihit),
 	Pif(Pfunc({ 0.8.coin }), ~score_tabla_lowflock),
 	Pif(Pfunc({ 0.6.coin }), ~score_tabla_dead),
-], Prand([1,2],1).trace ).asEventStreamPlayer;
+], Prand([1,2],1) ).asEventStreamPlayer;
 
 
 
