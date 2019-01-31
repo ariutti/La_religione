@@ -1,0 +1,35 @@
+// SERIAL DATA //////////////////////////////////////////////////////////////////////
+void getSerialData()
+{
+  while (Serial.available() > 0)
+  {
+    char c = Serial.read();
+    // the message from VVVV is finished
+    if (c == ';')
+    {
+			if( temp[0]=='S') {
+				// this is a "SET TH" msg
+
+			} else if( temp[0]=='D') {
+				// this is a "SET DEBUG MODE" msg
+				bDebugMode = true;
+			} else if( temp[0]=='P') {
+				// this is a "SET PRESENCE MODE" msg
+				bDebugMode = false;
+			} else if( temp[0]=='1') {
+				// this is a "SERIAL COMM ON" msg
+				bSendSerial = true;
+			} else if( temp[0]=='0') {
+				// this is a "SERIAL COMM OFF" msg
+				bSendSerial = false;
+			}
+			temp = "";
+    }
+    else
+    {
+      // if the message from VVVV is not finished yet,
+      // append character to 'temp' string
+      temp += c;
+    }
+  }
+}
